@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "title": "Sai Vardhan Makkapati — AI/ML Engineer",
+    "description": "AI/ML Engineer Portfolio — Building intelligent systems, multi-agent architectures, and production-grade AI infrastructure.",
+    "keywords": "AI Engineer, ML Engineer, Machine Learning, Deep Learning, RAG, Multi-Agent Systems, Portfolio",
+    "author": "Sai Vardhan Makkapati"
+  },
+
+  "nav": {
+    "logo": "~/svmakkapati",
+    "links": ["about", "experience", "projects", "skills", "contact"]
+  },
+
+  "boot": {
+    "lines": [
+      { "text": "[kernel]  loading svmakkapati_portfolio v3.2.1 ...", "ok": false },
+      { "text": "[init]    mounting filesystem .............. OK", "ok": true },
+      { "text": "[sys]     allocating memory ............... 16384 MB", "ok": false },
+      { "text": "[gpu]     CUDA runtime detected ........... v12.4", "ok": false },
+      { "text": "[net]     binding port 443 ................ OK", "ok": true },
+      { "text": "[auth]    verifying credentials ........... PASSED", "ok": true },
+      { "text": "[ml]      loading model weights ........... 7B params", "ok": false },
+      { "text": "[vdb]     connecting vector store .......... qdrant://localhost:6333", "ok": false },
+      { "text": "[agent]   initializing reasoning graph .... nodes=12, edges=18", "ok": false },
+      { "text": "[cache]   redis connection pool ........... size=50", "ok": false },
+      { "text": "[api]     registering endpoints ........... 24 routes", "ok": false },
+      { "text": "[health]  system check .................... ALL GREEN", "ok": true },
+      { "text": "", "ok": false },
+      { "text": "[boot]    ████████████████████████████████ 100%", "ok": true },
+      { "text": "[ready]   portfolio loaded. welcome.", "ok": true }
+    ],
+    "lineDelayMs": 220,
+    "transitionDelayMs": 600
+  },
+
+  "hero": {
+    "prefix": "> whoami",
+    "nameFirst": "Sai Vardhan",
+    "nameLast": "Makkapati",
+    "role": "AI / ML Engineer",
+    "statement": "I build systems that think, retrieve, and act — at production scale.",
+    "cta": [
+      { "label": "> view_projects()", "href": "#projects", "style": "primary" },
+      { "label": "> contact()", "href": "#contact", "style": "secondary" }
+    ],
+    "terminalTitle": "skills.sh",
+    "terminalPrompt": "$ cat expertise.txt",
+    "skills": [
+      "\"multi-agent systems\"",
+      "\"RAG pipelines\"",
+      "\"AI infrastructure\"",
+      "\"LLM fine-tuning\"",
+      "\"vector search\"",
+      "\"ML deployment\"",
+      "\"agentic workflows\"",
+      "\"production ML\""
+    ]
+  },
+
+  "about": {
+    "sectionNumber": "01",
+    "sectionTitle": "about()",
+    "paragraphs": [
+      "I'm an engineer obsessed with making AI work — not on paper, but in production.",
+      "My focus spans the full AI lifecycle: from research prototypes to scalable inference pipelines. I architect multi-agent systems, build RAG platforms that actually retrieve relevant context, and deploy models that serve predictions reliably under load.",
+      "I don't chase benchmarks. I ship products that move metrics."
+    ],
+    "terminal": [
+      { "command": "echo $CURRENT_FOCUS", "output": "> Production AI systems, multi-agent orchestration, retrieval-augmented generation" },
+      { "command": "echo $PHILOSOPHY", "output": "> \"Build it right, ship it fast, make it reliable.\"" }
+    ]
+  },
+
+  "experience": {
+    "sectionNumber": "02",
+    "sectionTitle": "experience()",
+    "items": [
+      {
+        "role": "AI/ML Engineer",
+        "date": "2024 — present",
+        "company": "// Stealth Startup",
+        "points": [
+          "Architected a multi-agent RAG platform serving 10K+ queries/day with sub-2s latency",
+          "Built asynchronous ingestion pipelines processing 50K+ documents with intelligent chunking",
+          "Designed domain-specific guardrails reducing hallucination rate by 73%",
+          "Deployed containerized microservices with Redis caching and Qdrant vector search"
+        ]
+      },
+      {
+        "role": "Machine Learning Engineer",
+        "date": "2023 — 2024",
+        "company": "// AI Research Lab",
+        "points": [
+          "Developed NLP models for multilingual document understanding (F1: 0.94)",
+          "Built end-to-end MLOps pipeline with automated retraining and model versioning",
+          "Optimized inference throughput by 4x using model quantization and batching",
+          "Published internal research on few-shot learning for domain adaptation"
+        ]
+      },
+      {
+        "role": "Software Engineer — ML Platform",
+        "date": "2022 — 2023",
+        "company": "// Tech Company",
+        "points": [
+          "Built feature store serving 200M+ feature vectors for real-time inference",
+          "Implemented A/B testing framework for model experimentation across 5 product surfaces",
+          "Automated model deployment pipeline reducing deploy time from 2 hours to 8 minutes"
+        ]
+      }
+    ]
+  },
+
+  "projects": {
+    "sectionNumber": "03",
+    "sectionTitle": "projects()",
+    "items": [
+      {
+        "title": "RAG Platform",
+        "description": "Production-grade retrieval-augmented generation system with multi-source ingestion, semantic search, and agentic query processing. Handles 10K+ queries/day.",
+        "tech": ["Python", "LangGraph", "Qdrant", "FastAPI", "Redis", "Docker"],
+        "links": [
+          { "label": "github", "url": "#" },
+          { "label": "demo", "url": "#" }
+        ]
+      },
+      {
+        "title": "Multi-Agent Orchestrator",
+        "description": "Autonomous agent framework with tool-calling, memory management, and hierarchical task decomposition. Supports parallel execution and fallback strategies.",
+        "tech": ["Python", "LangChain", "OpenAI", "PostgreSQL", "Celery"],
+        "links": [
+          { "label": "github", "url": "#" }
+        ]
+      },
+      {
+        "title": "Real-Time ML Pipeline",
+        "description": "Streaming ML pipeline for real-time fraud detection. Processes 50K events/sec with feature engineering, model inference, and alerting in under 100ms.",
+        "tech": ["Python", "Kafka", "PyTorch", "Kubernetes", "Grafana"],
+        "links": [
+          { "label": "github", "url": "#" },
+          { "label": "demo", "url": "#" }
+        ]
+      },
+      {
+        "title": "Document Intelligence",
+        "description": "Multimodal document understanding system. Extracts structured data from unstructured documents using vision-language models and custom NER pipelines.",
+        "tech": ["Python", "Transformers", "spaCy", "FastAPI", "AWS"],
+        "links": [
+          { "label": "github", "url": "#" }
+        ]
+      },
+      {
+        "title": "Few-Shot Classifier",
+        "description": "Meta-learning framework for few-shot text classification using prototypical networks. Achieves 91% accuracy with only 5 examples per class on custom domains.",
+        "tech": ["PyTorch", "Transformers", "Weights & Biases", "ONNX"],
+        "links": [
+          { "label": "github", "url": "#" },
+          { "label": "paper", "url": "#" }
+        ]
+      },
+      {
+        "title": "Inference Engine",
+        "description": "High-throughput model serving engine with dynamic batching, model sharding, and automatic scaling. Reduces inference cost by 60% compared to naive deployment.",
+        "tech": ["Python", "TensorRT", "Triton", "gRPC", "Docker"],
+        "links": [
+          { "label": "github", "url": "#" }
+        ]
+      }
+    ]
+  },
+
+  "skills": {
+    "sectionNumber": "04",
+    "sectionTitle": "skills()",
+    "terminalTitle": "skills --list-all",
+    "groups": [
+      { "command": "cat languages.txt", "items": "Python  ·  TypeScript  ·  SQL  ·  Rust  ·  Go  ·  Bash" },
+      { "command": "cat ml_frameworks.txt", "items": "PyTorch  ·  TensorFlow  ·  Transformers  ·  scikit-learn  ·  spaCy  ·  ONNX" },
+      { "command": "cat ai_tooling.txt", "items": "LangChain  ·  LangGraph  ·  LlamaIndex  ·  OpenAI API  ·  Ollama  ·  vLLM" },
+      { "command": "cat infrastructure.txt", "items": "Docker  ·  Kubernetes  ·  AWS  ·  GCP  ·  Terraform  ·  GitHub Actions" },
+      { "command": "cat databases.txt", "items": "PostgreSQL  ·  Redis  ·  Qdrant  ·  Pinecone  ·  MongoDB  ·  Elasticsearch" },
+      { "command": "cat practices.txt", "items": "MLOps  ·  CI/CD  ·  Microservices  ·  System Design  ·  A/B Testing  ·  Monitoring" }
+    ]
+  },
+
+  "contact": {
+    "sectionNumber": "05",
+    "sectionTitle": "contact()",
+    "terminalCommand": "echo \"Let's build something intelligent.\"",
+    "terminalOutput": "> Let's build something intelligent.",
+    "links": [
+      { "label": "svmakkapati@example.com", "url": "mailto:svmakkapati@example.com", "id": "contact-email" },
+      { "label": "github.com/svmakkapati", "url": "https://github.com", "id": "contact-github" },
+      { "label": "linkedin.com/in/svmakkapati", "url": "https://linkedin.com", "id": "contact-linkedin" },
+      { "label": "x.com/svmakkapati", "url": "https://x.com", "id": "contact-twitter" }
+    ],
+    "note": "// Response time: < 24 hours. Open to collaborations, consulting, and full-time roles."
+  },
+
+  "footer": {
+    "line1": "Built with <span class=\"footer-highlight\">zero frameworks</span> · Designed in the terminal",
+    "line2": "© 2026 Sai Vardhan Makkapati. All rights reserved."
+  }
+}
