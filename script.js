@@ -1,6 +1,109 @@
 /* ============================================
    MAIN — fetch data.json and build everything
    ============================================ */
+// Liquid blob glow effect and scattered words
+(function initAmbientBackground() {
+  let mouseX = -200, mouseY = -200;
+  const blobCount = 5;
+  const blobs = [];
+
+  // Each blob orbits the cursor at a different radius, speed, and size
+  for (let i = 0; i < blobCount; i++) {
+    blobs.push({
+      angle: (Math.PI * 2 / blobCount) * i,
+      speed: 0.8 + Math.random() * 0.6,
+      radius: 20 + Math.random() * 25,
+      size: 40 + Math.random() * 30,
+    });
+  }
+
+  // Generate scattering words
+  const wordList = [
+    "def", "class", "import", "from", "return", "yield",
+    "if __name__ == '__main__':", "self", "__init__", "pass",
+    "try:", "except", "finally:", "raise", "with", "as",
+    "async def", "await", "lambda", "*args", "**kwargs",
+    "@staticmethod", "@classmethod", "@property", "None", "True", "False",
+    "print()", "len()", "range()", "open()", "super()",
+    "list", "dict", "set", "tuple", "str", "int", "float",
+    "[x for x in data]", "np.array()", "pd.DataFrame()", "torch.tensor()",
+    "import numpy as np", "import pandas as pd", "import torch"
+  ];
+
+  const containerBase = document.createElement('div');
+  containerBase.id = 'ambient-words-base';
+  
+  const containerGlow = document.createElement('div');
+  containerGlow.id = 'ambient-words-glow';
+
+  // Inject words evenly across a grid with jitter to prevent overlap
+  const cols = 8;
+  const rows = 10;
+  const cellWidth = 100 / cols;
+  const cellHeight = 100 / rows;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      // 30% chance to skip a cell so it feels more organic and less dense
+      if (Math.random() > 0.7) continue;
+
+      const word = wordList[Math.floor(Math.random() * wordList.length)];
+      
+      // Calculate position: center of the grid cell + random jitter within the cell
+      const top = (r * cellHeight) + (cellHeight / 2) + ((Math.random() - 0.5) * cellHeight * 0.8);
+      const left = (c * cellWidth) + (cellWidth / 2) + ((Math.random() - 0.5) * cellWidth * 0.8);
+      const fontSize = 10 + Math.random() * 12;
+
+      const spanB = document.createElement('span');
+      spanB.textContent = word;
+      spanB.className = 'ambient-word';
+      spanB.style.top = `${top}vh`;
+      spanB.style.left = `${left}vw`;
+      spanB.style.fontSize = `${fontSize}px`;
+      containerBase.appendChild(spanB);
+
+      const spanG = document.createElement('span');
+      spanG.textContent = word;
+      spanG.className = 'ambient-word glow';
+      spanG.style.top = `${top}vh`;
+      spanG.style.left = `${left}vw`;
+      spanG.style.fontSize = `${fontSize}px`;
+      containerGlow.appendChild(spanG);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.body.prepend(containerGlow);
+    document.body.prepend(containerBase);
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function tick(time) {
+    const t = time / 1000;
+    const parts = [];
+
+    parts.push(`radial-gradient(circle 50px at ${mouseX}px ${mouseY}px, black 0%, transparent 100%)`);
+
+    for (const b of blobs) {
+      const angle = b.angle + t * b.speed;
+      const bx = mouseX + Math.cos(angle) * b.radius;
+      const by = mouseY + Math.sin(angle) * b.radius;
+      parts.push(`radial-gradient(circle ${b.size}px at ${bx}px ${by}px, black 0%, transparent 100%)`);
+    }
+
+    const composite = parts.join(', ');
+    containerGlow.style.setProperty('--blob-mask', composite);
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();
+
 (async function () {
   const res = await fetch("data.json");
   const data = await res.json();
@@ -51,6 +154,13 @@ function runBoot(boot, onDone) {
 function buildSite(data) {
   const site = document.getElementById("site");
   site.innerHTML = "";
+
+  // Inject scanlines overlay (moved from body::after to avoid CSS conflict with mouse-glow)
+  if (!document.getElementById('scanlines')) {
+    const scanlines = document.createElement('div');
+    scanlines.id = 'scanlines';
+    document.body.appendChild(scanlines);
+  }
 
   site.appendChild(buildNavbar(data.nav));
   site.appendChild(buildHero(data.hero));
@@ -142,7 +252,6 @@ function buildHero(hero) {
       <div class="terminal-body">
         <p class="terminal-prompt">${esc(hero.terminalPrompt)}</p>
         <div id="typewriter-skills"></div>
-        <span class="cursor-blink">█</span>
       </div>
     </div>
   `;
@@ -400,12 +509,13 @@ function typeNext() {
   }
 
   if (!twDeleting) {
-    twLine.textContent = current.substring(0, twChar + 1);
+    twLine.innerHTML = esc(current.substring(0, twChar + 1)) + '<span class="cursor-blink" style="font-weight: 400; margin-left: 2px;">█</span>';
     twChar++;
 
     if (twChar === current.length) {
       setTimeout(() => {
         if (twIndex < twSkills.length - 1) {
+          twLine.innerHTML = esc(current);
           twLine = null;
           twIndex++;
           twChar = 0;
@@ -420,7 +530,7 @@ function typeNext() {
 
     setTimeout(typeNext, 45 + Math.random() * 35);
   } else {
-    twLine.textContent = current.substring(0, twChar - 1);
+    twLine.innerHTML = esc(current.substring(0, twChar - 1)) + '<span class="cursor-blink" style="font-weight: 400; margin-left: 2px;">█</span>';
     twChar--;
 
     if (twChar === 0) {
