@@ -66,6 +66,9 @@ function buildSite(data) {
   initScrollAnimations();
   initSmoothScroll();
   startTypewriter(data.hero.skills);
+  initSectionTitleTypewriters();
+  initAboutTerminalTypewriter();
+  initContactTypewriter();
 }
 
 /* ============================================
@@ -153,7 +156,7 @@ function buildHero(hero) {
    ABOUT
    ============================================ */
 function buildAbout(about) {
-  const section = createSection("about", about.sectionNumber, about.sectionTitle);
+  const section = createSection("about", about.sectionNumber, about.sectionTitle, true);
   const content = document.createElement("div");
   content.className = "section-content about-content";
 
@@ -169,11 +172,13 @@ function buildAbout(about) {
   if (about.terminal && about.terminal.length) {
     const term = document.createElement("div");
     term.className = "about-terminal";
+    term.id = "about-terminal";
     about.terminal.forEach((t) => {
       const cmd = document.createElement("p");
+      cmd.className = "term-line";
       cmd.innerHTML = `<span class="prompt-symbol">$</span> ${esc(t.command)}`;
       const out = document.createElement("p");
-      out.className = "about-output";
+      out.className = "about-output typewriter-output term-line";
       out.textContent = t.output;
       term.appendChild(cmd);
       term.appendChild(out);
@@ -190,7 +195,7 @@ function buildAbout(about) {
    EXPERIENCE
    ============================================ */
 function buildExperience(exp) {
-  const section = createSection("experience", exp.sectionNumber, exp.sectionTitle);
+  const section = createSection("experience", exp.sectionNumber, exp.sectionTitle, true);
   const content = document.createElement("div");
   content.className = "section-content";
 
@@ -299,14 +304,14 @@ function buildSkills(skills) {
    CONTACT
    ============================================ */
 function buildContact(contact) {
-  const section = createSection("contact", contact.sectionNumber, contact.sectionTitle);
+  const section = createSection("contact", contact.sectionNumber, contact.sectionTitle, true);
   const content = document.createElement("div");
   content.className = "section-content contact-content";
 
   content.innerHTML = `
-    <div class="contact-terminal">
+    <div class="contact-terminal" id="contact-terminal">
       <p class="contact-prompt"><span class="prompt-symbol">$</span> ${esc(contact.terminalCommand)}</p>
-      <p class="contact-output">${esc(contact.terminalOutput)}</p>
+      <p class="contact-output type-in">${esc(contact.terminalOutput)}</p>
     </div>
     <div class="contact-links">
       ${contact.links
@@ -341,16 +346,23 @@ function buildFooter(footer) {
 /* ============================================
    HELPERS
    ============================================ */
-function createSection(id, number, title) {
+function createSection(id, number, title, typewriterTitle = false) {
   const section = document.createElement("section");
   section.id = id;
   section.className = "section";
 
   const h2 = document.createElement("h2");
   h2.className = "section-title";
-  h2.innerHTML = `<span class="section-number">${esc(number)}.</span> ${esc(title)}`;
-  section.appendChild(h2);
 
+  if (typewriterTitle) {
+    h2.innerHTML = `<span class="section-number">${esc(number)}.</span> <span class="title-text"></span><span class="title-cursor">█</span>`;
+    h2.dataset.fullTitle = title;
+    h2.dataset.typewriter = "true";
+  } else {
+    h2.innerHTML = `<span class="section-number">${esc(number)}.</span> ${esc(title)}`;
+  }
+
+  section.appendChild(h2);
   return section;
 }
 
@@ -505,4 +517,108 @@ function initSmoothScroll() {
       }
     });
   });
+}
+
+/* ============================================
+   SECTION TITLE TYPEWRITER
+   ============================================ */
+function initSectionTitleTypewriters() {
+  const titles = document.querySelectorAll('.section-title[data-typewriter="true"]');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          typeSectionTitle(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  titles.forEach((t) => observer.observe(t));
+}
+
+function typeSectionTitle(h2) {
+  const fullText = h2.dataset.fullTitle;
+  const textEl = h2.querySelector(".title-text");
+  if (!textEl || !fullText) return;
+
+  h2.classList.add("typing");
+  let i = 0;
+
+  function tick() {
+    if (i <= fullText.length) {
+      textEl.textContent = fullText.substring(0, i);
+      i++;
+      setTimeout(tick, 55 + Math.random() * 40);
+    } else {
+      h2.classList.remove("typing");
+      h2.classList.add("typed");
+    }
+  }
+
+  tick();
+}
+
+/* ============================================
+   ABOUT TERMINAL TYPEWRITER
+   ============================================ */
+function initAboutTerminalTypewriter() {
+  const terminal = document.getElementById("about-terminal");
+  if (!terminal) return;
+
+  const lines = terminal.querySelectorAll(".term-line");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          terminal.classList.add("typing");
+          revealLinesSequentially(lines);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  observer.observe(terminal);
+}
+
+function revealLinesSequentially(lines) {
+  lines.forEach((line, index) => {
+    setTimeout(() => {
+      line.classList.add("revealed");
+      if (line.classList.contains("typewriter-output")) {
+        setTimeout(() => line.classList.add("expanding"), 100);
+      }
+    }, index * 350);
+  });
+}
+
+/* ============================================
+   CONTACT TERMINAL TYPEWRITER
+   ============================================ */
+function initContactTypewriter() {
+  const terminal = document.getElementById("contact-terminal");
+  if (!terminal) return;
+
+  const output = terminal.querySelector(".contact-output.type-in");
+  if (!output) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => output.classList.add("expanding"), 400);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+
+  observer.observe(terminal);
 }

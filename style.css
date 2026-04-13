@@ -426,6 +426,29 @@ ul {
   margin-right: 8px;
 }
 
+/* Section title typewriter effect */
+.section-title .title-text {
+  display: inline;
+}
+
+.section-title .title-cursor {
+  display: inline-block;
+  color: var(--fg-dim);
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+  font-weight: 400;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.section-title.typing .title-cursor {
+  opacity: 1;
+}
+
+.section-title.typed .title-cursor {
+  opacity: 0;
+}
+
 .section-content {
   font-size: 14px;
 }
@@ -455,6 +478,46 @@ ul {
 .about-output {
   color: var(--fg-dim);
   padding-left: 16px;
+}
+
+/* About terminal typewriter */
+.about-terminal .term-line {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.about-terminal.typing .term-line.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-output.typewriter-output {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  transition: none;
+}
+
+.about-output.typewriter-output.expanding {
+  animation: expandWidth 0.8s steps(40) forwards;
+}
+
+@keyframes expandWidth {
+  to {
+    width: 100%;
+  }
+}
+
+/* Contact terminal typewriter */
+.contact-output.type-in {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+}
+
+.contact-output.type-in.expanding {
+  animation: expandWidth 0.6s steps(30) forwards;
 }
 
 /* ============================================
@@ -601,10 +664,98 @@ ul {
 
 .project-tech span {
   font-size: 11px;
-  color: var(--fg-dim);
+  color: var(--fg);
   padding: 3px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-hover);
   border-radius: 3px;
+  background: rgba(255, 255, 255, 0.03);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.project-tech span::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.project-tech span:hover {
+  color: var(--fg-bright);
+  border-color: var(--fg-dim);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05), inset 0 0 12px rgba(255, 255, 255, 0.02);
+  transform: translateY(-1px);
+}
+
+.project-tech span:hover::before {
+  left: 100%;
+}
+
+/* Tech tag staggered entrance animation */
+.project-card.visible .project-tech span {
+  animation: techTagReveal 0.4s ease forwards;
+  opacity: 0;
+}
+
+.project-card.visible .project-tech span:nth-child(1) { animation-delay: 0.1s; }
+.project-card.visible .project-tech span:nth-child(2) { animation-delay: 0.2s; }
+.project-card.visible .project-tech span:nth-child(3) { animation-delay: 0.3s; }
+.project-card.visible .project-tech span:nth-child(4) { animation-delay: 0.4s; }
+.project-card.visible .project-tech span:nth-child(5) { animation-delay: 0.5s; }
+.project-card.visible .project-tech span:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes techTagReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+    border-color: transparent;
+  }
+  60% {
+    border-color: var(--fg-dim);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    border-color: var(--border-hover);
+    box-shadow: none;
+  }
+}
+
+/* Ambient shimmer on idle tech tags */
+.project-card.visible .project-tech span {
+  animation: techTagReveal 0.4s ease forwards, techShimmer 4s ease-in-out infinite;
+  animation-delay: 0s, 2s;
+}
+
+.project-card.visible .project-tech span:nth-child(1) { animation-delay: 0.1s, 2.2s; }
+.project-card.visible .project-tech span:nth-child(2) { animation-delay: 0.2s, 2.6s; }
+.project-card.visible .project-tech span:nth-child(3) { animation-delay: 0.3s, 3.0s; }
+.project-card.visible .project-tech span:nth-child(4) { animation-delay: 0.4s, 3.4s; }
+.project-card.visible .project-tech span:nth-child(5) { animation-delay: 0.5s, 3.8s; }
+.project-card.visible .project-tech span:nth-child(6) { animation-delay: 0.6s, 4.2s; }
+
+@keyframes techShimmer {
+  0%, 100% {
+    border-color: var(--border-hover);
+    color: var(--fg);
+  }
+  50% {
+    border-color: var(--fg-dim);
+    color: var(--fg-bright);
+    background: rgba(255, 255, 255, 0.04);
+  }
 }
 
 /* ============================================
