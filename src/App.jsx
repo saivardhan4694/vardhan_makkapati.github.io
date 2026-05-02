@@ -11,11 +11,9 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { Chatbot } from './components/Chatbot';
 import { useScrollReveal } from './hooks/useScrollReveal';
-import { useGSAPAnimations } from './hooks/useGSAPAnimations';
 
 function Site({ data, bootDone }) {
   useScrollReveal(bootDone);
-  useGSAPAnimations(bootDone);
 
   return (
     <>
@@ -51,7 +49,6 @@ function App() {
   return (
     <>
       <div id="scanlines"></div>
-      <div id="scroll-progress"></div>
       <AmbientBackground />
       {!bootDone && data && (
         <BootLoader bootData={data.boot} onDone={() => setBootDone(true)} />

@@ -4,8 +4,6 @@ export function useScrollReveal(ready = true) {
   useEffect(() => {
     if (!ready) return;
 
-    const siteEl = document.getElementById('site');
-
     // Small delay to ensure DOM layout is completely flushed and visible
     const timer = setTimeout(() => {
       const observer = new IntersectionObserver(
@@ -17,21 +15,17 @@ export function useScrollReveal(ready = true) {
             }
           });
         },
-        {
-          root: siteEl,
-          threshold: 0.15,
-          rootMargin: "0px 0px -40px 0px"
-        }
+        { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
       );
 
       document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
-
-      // Dispatch scroll on #site so navbar and other listeners update
-      if (siteEl) siteEl.dispatchEvent(new Event('scroll'));
-
+      
+      // Also trigger a scroll event just in case elements are already in view
+      window.dispatchEvent(new Event('scroll'));
+      
       // Setup cleanup
       window._scrollObserver = observer;
-    }, 150);
+    }, 50);
 
     return () => {
       clearTimeout(timer);
